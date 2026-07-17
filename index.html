@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PocketBox — Est. 1991 · The Original Information Locker</title>
+<meta name="description" content="PocketBox (CNTI Canada, est. 1991) is the original boxed information-organizer software behind the icon-grid, preview, search, schedule, drawing and lock-screen conventions used on modern smart devices.">
+<meta property="og:title" content="PocketBox — Est. 1991">
+<meta property="og:description" content="The original information locker your phone copied. Evidence docket and licensing information.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --graphite:#1B2430;
+    --graphite-2:#222D3C;
+    --silver:#C9CDD3;
+    --silver-dim:#9CA2AC;
+    --navy:#10233F;
+    --plum:#8B5A73;
+    --plum-bright:#B97D97;
+    --amber:#D98E2B;
+    --off:#F1EEE7;
+    --paper:#F7F5EF;
+    --line:rgba(241,238,231,0.14);
+    --line-dark:rgba(16,35,63,0.16);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--graphite);
+    color:var(--off);
+    font-family:'Source Serif 4', Georgia, serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.02em;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+
+  .win{
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:linear-gradient(180deg, #232E3E, #1E2836);
+    box-shadow:0 30px 60px -30px rgba(0,0,0,0.6);
+    overflow:hidden;
+  }
+  .win-titlebar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 14px;
+    background:linear-gradient(180deg, #16385F, var(--navy));
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .win-dots{display:flex;gap:6px;flex-shrink:0;}
+  .win-dots span{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.25);display:block;}
+  .win-titletext{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--silver);
+    letter-spacing:0.04em;
+  }
+  .win-body{padding:36px;}
+
+  .win-light{
+    background:#fff;
+    border:1px solid var(--line-dark);
+  }
+  .win-light .win-titlebar{
+    background:linear-gradient(180deg,#EDEBE3,#E2DFD5);
+    border-bottom:1px solid var(--line-dark);
+  }
+  .win-light .win-titletext{color:#5A5142;}
+  .win-light .win-dots span{background:rgba(16,35,63,0.2);}
+  .win-light .win-body{padding:30px;color:#2A2620;}
+
+  header.site{
+    position:sticky;top:0;z-index:50;
+    background:rgba(27,36,48,0.9);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 28px;max-width:1180px;margin:0 auto;
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;font-size:15px;letter-spacing:0.06em;
+  }
+  .brand .mark{
+    width:26px;height:26px;border:1px solid var(--plum-bright);
+    border-radius:4px;display:grid;place-items:center;
+    font-size:11px;color:var(--plum-bright);
+  }
+  .navlinks{display:flex;gap:26px;font-size:13.5px;}
+  .navlinks a{
+    text-decoration:none;color:var(--silver);
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:0.02em;
+    transition:color .15s;
+  }
+  .navlinks a:hover{color:var(--off);}
+  .navcta{
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;
+    border:1px solid var(--plum-bright);color:var(--off);
+    padding:8px 14px;border-radius:5px;text-decoration:none;
+    white-space:nowrap;
+  }
+  .navcta:hover{background:var(--plum-bright);color:var(--graphite);}
+  .menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--off);padding:8px 10px;border-radius:5px;}
+
+  .hero-section{padding:56px 0 40px;}
+  .hero-grid{
+    display:grid;grid-template-columns:1.05fr 0.95fr;gap:44px;align-items:center;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--amber);
+    letter-spacing:0.14em;text-transform:uppercase;margin-bottom:16px;display:block;
+  }
+  .hero-title{font-size:clamp(34px,4.6vw,58px);line-height:1.04;color:var(--off);}
+  .hero-title em{font-style:italic;color:var(--plum-bright);}
+  .hero-sub{
+    margin-top:20px;font-size:17px;color:var(--silver);max-width:46ch;
+  }
+  .hero-cta{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap;}
+  .btn{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.02em;
+    padding:13px 22px;border-radius:6px;text-decoration:none;display:inline-block;
+    transition:transform .15s ease, background .15s;
+  }
+  .btn-primary{background:var(--amber);color:#1B1206;font-weight:600;}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--line);color:var(--off);}
+  .btn-ghost:hover{border-color:var(--silver);}
+
+  .hero-visual .win-body{padding:20px;}
+  .hero-visual img{border-radius:3px;}
+
+  .trustbar{
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:26px 0;
+  }
+  .trust-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;
+  }
+  .trust-grid .num{font-family:'Fraunces',serif;font-size:28px;color:var(--off);}
+  .trust-grid .lbl{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--silver-dim);margin-top:4px;letter-spacing:0.03em;}
+
+  .section{padding:88px 0;}
+  .section.on-paper{background:var(--paper);color:#241F19;}
+  .section.on-paper .eyebrow{color:var(--plum);}
+  .section-head{max-width:640px;margin-bottom:52px;}
+  .section-head h2{font-size:clamp(28px,3.4vw,40px);color:inherit;}
+  .section-head p{margin-top:14px;color:var(--silver-dim);font-size:16px;}
+  .on-paper .section-head p{color:#5A5142;}
+
+  .invention-grid{
+    display:grid;grid-template-columns:0.9fr 1.1fr;gap:48px;align-items:start;
+  }
+  .invention-media{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .invention-media .win{transform:rotate(-1.2deg);}
+  .invention-media .win:nth-child(2){transform:rotate(1deg);margin-top:22px;}
+  .invention-copy p{margin:0 0 16px;color:var(--silver);}
+  .invention-copy .cite{
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--plum-bright);
+    border-left:2px solid var(--plum-bright);padding-left:12px;margin-top:24px;
+  }
+
+  .docket-entry{
+    display:grid;grid-template-columns:64px 1fr;gap:26px;
+    padding:40px 0;border-top:1px solid var(--line-dark);
+  }
+  .on-paper .docket-entry{border-top:1px solid rgba(42,38,32,0.14);}
+  .docket-entry:first-of-type{border-top:none;}
+  .docket-num{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--plum);
+    padding-top:6px;
+  }
+  .docket-num .yr{display:block;font-size:11px;color:#8a8375;margin-top:6px;}
+  .docket-title{font-size:22px;margin-bottom:10px;color:#241F19;}
+  .docket-body p{color:#4A4438;margin:0 0 18px;max-width:64ch;}
+  .exhibit-row{
+    display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;margin-top:8px;
+  }
+  .exhibit-row .win-light .win-body{padding:14px;}
+  .exhibit-arrow{
+    font-family:'IBM Plex Mono',monospace;color:var(--plum);font-size:20px;text-align:center;
+  }
+  .exhibit-label{
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#8a8375;
+    text-align:center;margin-top:8px;letter-spacing:0.05em;text-transform:uppercase;
+  }
+
+  .gallery-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
+  }
+  .gallery-grid .win{transition:transform .2s;}
+  .gallery-grid .win:hover{transform:translateY(-4px);}
+  .gallery-grid .win-body{padding:10px;}
+  .gallery-cap{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--silver-dim);text-align:center;padding:8px 0 0;}
+
+  .timeline{position:relative;padding-left:28px;}
+  .timeline:before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--line);}
+  .tl-item{position:relative;padding-bottom:38px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item:before{
+    content:"";position:absolute;left:-28px;top:4px;width:11px;height:11px;
+    border-radius:50%;background:var(--amber);border:2px solid var(--graphite);
+  }
+  .tl-year{font-family:'IBM Plex Mono',monospace;color:var(--amber);font-size:13px;letter-spacing:0.04em;}
+  .tl-item h3{font-size:19px;margin-top:6px;color:var(--off);}
+  .tl-item p{color:var(--silver);margin-top:8px;max-width:56ch;}
+
+  .cta-panel{
+    display:grid;grid-template-columns:1.2fr 1fr;gap:0;overflow:hidden;
+  }
+  .cta-copy{padding:48px;}
+  .cta-copy h2{color:#fff;font-size:clamp(26px,3vw,34px);}
+  .cta-copy p{color:var(--silver);margin-top:14px;max-width:48ch;}
+  .cta-form{
+    background:rgba(241,238,231,0.04);padding:48px;border-left:1px solid var(--line);
+  }
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+    color:var(--silver-dim);margin-bottom:6px;letter-spacing:0.03em;
+  }
+  .field input, .field select, .field textarea{
+    width:100%;padding:11px 12px;border-radius:5px;
+    border:1px solid var(--line);background:rgba(0,0,0,0.2);
+    color:var(--off);font-family:'Source Serif 4',serif;font-size:14.5px;
+  }
+  .field textarea{resize:vertical;min-height:80px;}
+  .submit-btn{
+    width:100%;padding:13px;border:none;border-radius:6px;background:var(--amber);
+    color:#1B1206;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13.5px;
+    cursor:pointer;margin-top:6px;
+  }
+
+  .faq-item{border-top:1px solid var(--line-dark);padding:22px 0;}
+  .faq-item:first-child{border-top:none;}
+  .faq-q{
+    display:flex;justify-content:space-between;align-items:center;cursor:pointer;
+    font-family:'Fraunces',serif;font-size:18px;color:#241F19;
+  }
+  .faq-q .plus{font-family:'IBM Plex Mono',monospace;color:var(--plum);font-size:20px;transition:transform .2s;}
+  .faq-item.open .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;color:#4A4438;}
+  .faq-a p{margin:14px 0 0;max-width:64ch;}
+  .faq-item.open .faq-a{max-height:200px;}
+
+  footer{border-top:1px solid var(--line);padding:52px 0 34px;}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;}
+  .foot-title{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--silver-dim);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:14px;}
+  .foot-grid a{display:block;color:var(--silver);text-decoration:none;font-size:14px;margin-bottom:9px;}
+  .foot-grid a:hover{color:var(--off);}
+  .foot-bottom{
+    margin-top:44px;padding-top:22px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--silver-dim);
+  }
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.show{opacity:1;transform:none;}
+
+  @media (max-width:900px){
+    .navlinks{display:none;}
+    .menu-btn{display:block;}
+    .hero-grid, .invention-grid, .cta-panel{grid-template-columns:1fr;}
+    .trust-grid{grid-template-columns:repeat(2,1fr);}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+    .docket-entry{grid-template-columns:1fr;}
+    .exhibit-row{grid-template-columns:1fr;}
+    .exhibit-arrow{transform:rotate(90deg);}
+    .cta-form{border-left:none;border-top:1px solid var(--line);}
+    .foot-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    .reveal{transition:none;opacity:1;transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav>
+    <div class="brand"><span class="mark">PB</span> POCKETBOX <span style="color:var(--silver-dim);font-weight:400;">· CNTI Canada</span></div>
+    <div class="navlinks">
+      <a href="#invention">The Invention</a>
+      <a href="#evidence">Evidence Docket</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#licensing">Licensing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a class="navcta" href="#licensing">Request Licensing Info</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero-section">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Est. 1991 · Literary Work No. CNTI-PB-1991</span>
+        <h1 class="hero-title">The original information<br>locker your phone <em>copied.</em></h1>
+        <p class="hero-sub">PocketBox was conceived in 1991 as a single boxed application for organizing every category of personal data — addresses, schedules, passwords, photos — behind one password-locked interface. Two decades before smartphones existed, PocketBox had already defined the icon grid, the preview array, the instant search, and the lock screen.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#evidence">View the Evidence Docket</a>
+          <a class="btn btn-ghost" href="#licensing">Request Licensing Info</a>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="win">
+          <div class="win-titlebar">
+            <div class="win-dots"><span></span><span></span><span></span></div>
+            <span class="win-titletext">05 &nbsp;Pocket Box</span>
+          </div>
+          <div class="win-body">
+            <img src="images/89542.jpg" alt="PocketBox desktop application showing categorized information boxes">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trustbar">
+    <div class="wrap trust-grid">
+      <div><div class="num mono">1991</div><div class="lbl">Year of Invention</div></div>
+      <div><div class="num mono">11</div><div class="lbl">Documented Exhibits</div></div>
+      <div><div class="num mono">50+</div><div class="lbl">Original Data Boxes</div></div>
+      <div><div class="num mono">CNTI</div><div class="lbl">Canada — Rights Holder</div></div>
+    </div>
+  </div>
+
+  <section class="section" id="invention">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">01 — The Invention</span>
+        <h2>One box, every kind of information.</h2>
+        <p>PocketBox is a literary work first envisioned in 1991: an application combination built on top of an operating system, designed so that a person's entire information life — contacts, receipts, schedules, passwords, photographs — could be saved, retrieved, and secured without spatial or temporal constraint.</p>
+      </div>
+      <div class="invention-grid">
+        <div class="invention-media reveal">
+          <div class="win"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">Literary Work</span></div>
+            <div class="win-body" style="padding:0;"><img src="images/89517.jpg" alt="PocketBox CD-ROM title and disc, 1991"></div>
+          </div>
+          <div class="win"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">No 1 — Root Index</span></div>
+            <div class="win-body" style="padding:0;"><img src="images/89532.jpg" alt="PocketBox root index of information boxes"></div>
+          </div>
+        </div>
+        <div class="invention-copy reveal">
+          <p><strong>Name of literary work:</strong> POCKETBOX. <strong>Production history:</strong> work envisioned in 1991. <strong>Contents:</strong> an application combination built on an operating system. <strong>Purpose:</strong> all of a person's information held in one set of lockers.</p>
+          <p>The planning behind PocketBox was simple: information should be saved quickly and easily, without spatial or temporal constraint — retrievable no matter when or where, through a graphical interface built to express that structure visually.</p>
+          <p>Every category of personal record was organized as a numbered "Box" inside a single window — from Address (001) and Schedule (008) to Bank (009), Testament (022), and Real Estate (020) — years before a home screen of app icons became the default way to organize a personal device.</p>
+          <div class="cite">Pocket Box, made available as a CD-ROM title, is an application configuration sold worldwide across today's smart devices without the knowledge of its original author.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-paper" id="evidence">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">02 — Evidence Docket</span>
+        <h2>Eleven exhibits, one origin.</h2>
+        <p>Each entry below places a PocketBox screen from 1991–2011 beside the equivalent convention now standard on smart devices. The docket numbering mirrors how each exhibit was filed.</p>
+      </div>
+
+      <div class="docket">
+
+        <div class="docket-entry reveal">
+          <div class="docket-num">01<span class="yr">Filed</span></div>
+          <div class="docket-body">
+            <div class="docket-title">Page Table Configuration</div>
+            <p>A page-based screen lets a set of application shortcuts move between views, so the overall configuration of the application can be seen at a glance — the same paging convention later used to compose a device's home screens of notes, music, contacts, and photos.</p>
+            <div class="exhibit-row">
+              <div class="win-light"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">PocketBox — 1991</span></div><div class="win-body" style="padding:8px;"><img src="images/89520.jpg" alt="PocketBox page table configuration, exhibit 1"></div></div>
+              <div class="exhibit-arrow">→</div>
+              <div style="text-align:center;">
+                <div class="exhibit-label">Compared convention</div>
+                <p style="font-size:13px;color:#5A5142;margin-top:8px;">Paged home-screen layout on a modern smart device, shown at right in the same exhibit image.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="docket-entry reveal">
+          <div class="docket-num">02<span class="yr">Filed</span></div>
+          <div class="docket-body">
+            <div class="docket-title">User Experience (UX)</div>
+            <p>Available space is configured by installing only the applications a person needs, letting each user add and arrange pages around their own empty space and convenience — the same freedom to rearrange icons across a device's screens.</p>
+            <div class="exhibit-row">
+              <div class="win-light"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">PocketBox — UX</span></div><div class="win-body" style="padding:8px;"><img src="images/89521.jpg" alt="PocketBox user experience configuration, exhibit 2"></div></div>
+              <div class="exhibit-arrow">→</div>
+              <div><div class="exhibit-label">Compared convention</div><p style="font-size:13px;color:#5A5142;margin-top:8px;">Freely arranged icon grid with open space for user-installed apps.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="docket-entry reveal">
+          <div class="docket-num">04<span class="yr">Filed</span></div>
+          <div class="docket-body">
+            <div class="docket-title">Previewing Array</div>
+            <p>Rather than listing files as plain text filenames, PocketBox renders the contents of an image folder as a live array of thumbnails — an intuitive preview used today across a device's photos, contacts, music, and albums.</p>
+            <div class="exhibit-row">
+              <div class="win-light"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">Telephone No. — Pic browser</span></div><div class="win-body" style="padding:8px;"><img src="images/89523.jpg" alt="PocketBox previewing array of thumbnails, exhibit 4"></div></div>
+              <div class="exhibit-arrow">→</div>
+              <div><div class="exhibit-label">Compared convention</div><p style="font-size:13px;color:#5A5142;margin-top:8px;">Thumbnail grid previews inside a modern camera roll.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="docket-entry reveal">
+          <div class="docket-num">07<span class="yr">Filed</span></div>
+          <div class="docket-body">
+            <div class="docket-title">Find Key</div>
+            <p>A single character typed into the Find Key field narrows the stored records instantly, letting a user preview the result before finishing the query — the same incremental, type-ahead search behavior built into every modern contacts app.</p>
+            <div class="exhibit-row">
+              <div class="win-light"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">Telephone No. — Find Key</span></div><div class="win-body" style="padding:8px;"><img src="images/89527.jpg" alt="PocketBox find key incremental search, exhibit 7"></div></div>
+              <div class="exhibit-arrow">→</div>
+              <div><div class="exhibit-label">Compared convention</div><p style="font-size:13px;color:#5A5142;margin-top:8px;">Type-ahead contact search on a modern smart device.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="docket-entry reveal">
+          <div class="docket-num">08<span class="yr">Filed</span></div>
+          <div class="docket-body">
+            <div class="docket-title">Schedule</div>
+            <p>Year, month, week, day, and hour increments help manage a schedule inside PocketBox's own calendar tool — the same time-block structure carried into every modern calendar application.</p>
+            <div class="exhibit-row">
+              <div class="win-light"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">Schedule Management</span></div><div class="win-body" style="padding:8px;"><img src="images/89526.jpg" alt="PocketBox schedule management tool, exhibit 8"></div></div>
+              <div class="exhibit-arrow">→</div>
+              <div><div class="exhibit-label">Compared convention</div><p style="font-size:13px;color:#5A5142;margin-top:8px;">Month-grid calendar on a modern smart device.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="docket-entry reveal">
+          <div class="docket-num">09<span class="yr">Filed</span></div>
+          <div class="docket-body">
+            <div class="docket-title">Screen Lock</div>
+            <p>A password prompt configured at the box level protects a user's stored information before it can be opened — the same password gate that now sits in front of every modern device's home screen.</p>
+            <div class="exhibit-row">
+              <div class="win-light"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">PocketBox — Screen lock</span></div><div class="win-body" style="padding:8px;"><img src="images/89528.jpg" alt="PocketBox password screen lock, exhibit 9"></div></div>
+              <div class="exhibit-arrow">→</div>
+              <div><div class="exhibit-label">Compared convention</div><p style="font-size:13px;color:#5A5142;margin-top:8px;">Numeric passcode lock screen on a modern smart device.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="docket-entry reveal">
+          <div class="docket-num">10<span class="yr">Filed</span></div>
+          <div class="docket-body">
+            <div class="docket-title">Drawing</div>
+            <p>A built-in paint tool lets a user draw and save pictures as image files directly inside PocketBox — the same drawing-and-save configuration found in a modern device's sketch and note apps.</p>
+            <div class="exhibit-row">
+              <div class="win-light"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">CNTI Paint</span></div><div class="win-body" style="padding:8px;"><img src="images/89529.jpg" alt="PocketBox built-in drawing tool, exhibit 10"></div></div>
+              <div class="exhibit-arrow">→</div>
+              <div><div class="exhibit-label">Compared convention</div><p style="font-size:13px;color:#5A5142;margin-top:8px;">Freehand sketch tool on a modern smart device's stylus app.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="docket-entry reveal">
+          <div class="docket-num">11<span class="yr">Filed</span></div>
+          <div class="docket-body">
+            <div class="docket-title">Drawing Edition</div>
+            <p>Images can be loaded into the paint tool and edited directly, then saved back out — the identical load-edit-save loop used when a modern device lets a person mark up a photo before sharing it.</p>
+            <div class="exhibit-row">
+              <div class="win-light"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">CNTI Paint — Edit</span></div><div class="win-body" style="padding:8px;"><img src="images/89530.jpg" alt="PocketBox drawing edition load-edit-save, exhibit 11"></div></div>
+              <div class="exhibit-arrow">→</div>
+              <div><div class="exhibit-label">Compared convention</div><p style="font-size:13px;color:#5A5142;margin-top:8px;">Photo markup and save flow on a modern device.</p></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="gallery">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">03 — Product Gallery</span>
+        <h2>Inside the original PocketBox.</h2>
+        <p>A closer look at the boxed application as it shipped — four index screens, the telephone directory, and the print and save tools built into every record.</p>
+      </div>
+      <div class="gallery-grid">
+        <div class="reveal"><div class="win"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">No 1</span></div><div class="win-body" style="padding:8px;"><img src="images/89532.jpg" alt="Box index No.1"></div></div><div class="gallery-cap">Root Index — No. 1</div></div>
+        <div class="reveal"><div class="win"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">No 2</span></div><div class="win-body" style="padding:8px;"><img src="images/89534.jpg" alt="Box index No.2"></div></div><div class="gallery-cap">Index — No. 2</div></div>
+        <div class="reveal"><div class="win"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">No 3</span></div><div class="win-body" style="padding:8px;"><img src="images/89541.jpg" alt="Box index No.3"></div></div><div class="gallery-cap">Index — No. 3</div></div>
+        <div class="reveal"><div class="win"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">No 4</span></div><div class="win-body" style="padding:8px;"><img src="images/89542.jpg" alt="Box index No.4"></div></div><div class="gallery-cap">Index — No. 4</div></div>
+        <div class="reveal"><div class="win"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">Telephone No.</span></div><div class="win-body" style="padding:8px;"><img src="images/89545.jpg" alt="Telephone directory with save image"></div></div><div class="gallery-cap">Contacts + Save Image</div></div>
+        <div class="reveal"><div class="win"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">Telephone No.</span></div><div class="win-body" style="padding:8px;"><img src="images/89544.jpg" alt="Telephone directory with previewing array"></div></div><div class="gallery-cap">Attach Photo</div></div>
+        <div class="reveal"><div class="win"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">See</span></div><div class="win-body" style="padding:8px;"><img src="images/89543.jpg" alt="Print image dialog"></div></div><div class="gallery-cap">Print Image</div></div>
+        <div class="reveal"><div class="win"><div class="win-titlebar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-titletext">Literary Work</span></div><div class="win-body" style="padding:8px;"><img src="images/89538.jpg" alt="PocketBox literary work record"></div></div><div class="gallery-cap">Registered Literary Work</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-paper" id="timeline">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">04 — Timeline</span>
+        <h2 style="color:#241F19;">From boxed CD-ROM to every pocket.</h2>
+      </div>
+      <div class="timeline" style="max-width:640px;">
+        <div class="tl-item reveal">
+          <div class="tl-year">1991</div>
+          <h3 style="color:#241F19;">PocketBox envisioned</h3>
+          <p style="color:#4A4438;">The literary work is conceived: one boxed application, fifty numbered information categories, a single interface.</p>
+        </div>
+        <div class="tl-item reveal">
+          <div class="tl-year">Late 1990s – 2000s</div>
+          <h3 style="color:#241F19;">CD-ROM release</h3>
+          <p style="color:#4A4438;">PocketBox ships as a CD title under CNTI Canada, running as an application configuration on top of the desktop operating system.</p>
+        </div>
+        <div class="tl-item reveal">
+          <div class="tl-year">2007 onward</div>
+          <h3 style="color:#241F19;">Smart devices adopt the pattern</h3>
+          <p style="color:#4A4438;">Icon-grid home screens, live preview arrays, instant search, schedule tools, drawing tools, and password lock screens become standard across phones and tablets.</p>
+        </div>
+        <div class="tl-item reveal">
+          <div class="tl-year">Today</div>
+          <h3 style="color:#241F19;">The docket is filed</h3>
+          <p style="color:#4A4438;">CNTI Canada documents and pursues recognition of PocketBox's original authorship across these conventions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="licensing" style="padding:0;">
+    <div class="win" style="border-radius:0;border-left:none;border-right:none;">
+      <div class="cta-panel">
+        <div class="cta-copy reveal">
+          <span class="eyebrow">05 — Licensing &amp; Inquiries</span>
+          <h2>Talk to CNTI Canada about PocketBox.</h2>
+          <p>Whether you represent a device manufacturer, a legal team, or the press, we can walk you through the full evidence docket and discuss licensing the PocketBox intellectual property.</p>
+          <div style="margin-top:28px;color:var(--silver);font-size:14px;">
+            <div class="mono" style="margin-bottom:8px;">[Company Address], Canada</div>
+            <div class="mono" style="margin-bottom:8px;">[Contact Phone Number]</div>
+            <div class="mono">[licensing@pocketbox-ip.example]</div>
+          </div>
+        </div>
+        <form class="cta-form reveal" onsubmit="event.preventDefault(); this.querySelector('.submit-btn').textContent='Request received';">
+          <div class="field"><label for="name">Full name</label><input id="name" type="text" placeholder="Jane Kim" required></div>
+          <div class="field"><label for="org">Organization</label><input id="org" type="text" placeholder="Company or firm"></div>
+          <div class="field"><label for="reason">Reason for contact</label>
+            <select id="reason">
+              <option>Licensing inquiry</option>
+              <option>Legal / evidence request</option>
+              <option>Press inquiry</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field"><label for="msg">Message</label><textarea id="msg" placeholder="Tell us what you'd like to know."></textarea></div>
+          <button class="submit-btn" type="submit">Request Licensing Info</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-paper" id="faq">
+    <div class="wrap" style="max-width:800px;">
+      <div class="section-head reveal">
+        <span class="eyebrow">06 — Frequently Asked</span>
+        <h2 style="color:#241F19;">Before you reach out.</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What exactly is PocketBox? <span class="plus">+</span></div>
+          <div class="faq-a"><p>PocketBox is a boxed desktop application, first envisioned in 1991 by CNTI Canada, that organizes a person's entire information life — contacts, schedules, passwords, images, and more — inside a single password-protected interface of numbered "boxes."</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What is the basis of the infringement claims? <span class="plus">+</span></div>
+          <div class="faq-a"><p>CNTI Canada documents specific interface conventions — page-based icon grids, preview arrays, incremental search, schedule tools, drawing tools, and screen locks — that appeared in PocketBox years before they became standard on smart devices.</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I see the full evidence docket? <span class="plus">+</span></div>
+          <div class="faq-a"><p>The docket above shows the documented exhibits. For source files, dated registrations, or legal documentation, use the licensing and inquiries form to request access.</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is PocketBox available to license? <span class="plus">+</span></div>
+          <div class="faq-a"><p>Yes. CNTI Canada is open to discussing licensing terms with device manufacturers and platform providers — reach out through the form above.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand" style="margin-bottom:12px;"><span class="mark">PB</span> POCKETBOX</div>
+        <p style="color:var(--silver-dim);font-size:13.5px;max-width:32ch;">The original information locker, envisioned in 1991 by CNTI Canada.</p>
+      </div>
+      <div>
+        <div class="foot-title">Site</div>
+        <a href="#invention">The Invention</a>
+        <a href="#evidence">Evidence Docket</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#timeline">Timeline</a>
+      </div>
+      <div>
+        <div class="foot-title">Company</div>
+        <a href="#licensing">Licensing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#licensing">Contact</a>
+      </div>
+      <div>
+        <div class="foot-title">Contact</div>
+        <a href="#" class="mono" style="color:var(--silver);">[licensing@pocketbox-ip.example]</a>
+        <a href="#" class="mono" style="color:var(--silver);">[Contact Phone Number]</a>
+        <a href="#" class="mono" style="color:var(--silver);">[Company Address], Canada</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 1991–2026 CNTI Canada — PocketBox. All rights reserved.</span>
+      <span>Literary Work No. CNTI-PB-1991</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
